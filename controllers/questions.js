@@ -47,7 +47,6 @@ export const DeleteSelectedQuestion = async (req, res) => {
         if (!deleteSelectedQuestionData) {
             return res.status(404).send("Question not found")
         } else {
-
             return res.status(200).json("delete selected question")
         }
 

@@ -24,8 +24,6 @@ export const postAnswer = async (req, res) => {
     }
 }
 
-
-
 export const deleteAnswer = async (req, res) => {
     const { id: _id } = req.params;
     const { answerID, noOfAnswers } = req.body;
