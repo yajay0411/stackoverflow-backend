@@ -66,7 +66,6 @@ export const LikePost = async (req, res) => {
     const _id = req.params.id;
     const { value, userId } = req.body;
 
-    console.log(_id, value, userId)
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         return res.status(404).json("Post not found");
     }

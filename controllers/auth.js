@@ -63,6 +63,54 @@ export const updateUserData = async (req, res) => {
     }
 }
 
+export const followUser = async (req, res) => {
+    const _id = req.params.id;
+    const { value, userId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).json("user not found");
+    }
+
+    if (!userId) {
+        return res.status(422).json("Please login");
+    }
+
+    // console.log(_id, value, userId)
+
+    try {
+        const userFollowing = await User.findById(userId);
+        const followerarrayFollowing = userFollowing.following
+        const checkUserfollowedFollowing = followerarrayFollowing.includes(_id);
+
+        if (value === "follow") {
+            if (checkUserfollowedFollowing === true) {
+                followerarrayFollowing.pop(_id)
+            } else {
+                followerarrayFollowing.push(_id)
+            }
+        }
+        const userFollower = await User.findById(_id);
+        const followerarrayFollower = userFollower.followers
+        const checkUserfollowedFollower = followerarrayFollower.includes(userId);
+
+        if (value === "follow") {
+            if (checkUserfollowedFollower === true) {
+                followerarrayFollower.pop(userId)
+            } else {
+                followerarrayFollower.push(userId)
+            }
+        }
+
+        const userfollowedA = await User.findByIdAndUpdate(userId, userFollowing, { new: true }).select("-password")
+        const userfollowedB = await User.findByIdAndUpdate(_id, userFollower, { new: true }).select("-password")
+        await res.status(200).json([userfollowedA, userfollowedB]);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json({ message: "Like Error" })
+    }
+
+}
 
 
 
