@@ -75,6 +75,10 @@ export const sendEmail = async (req, res) => {
         const response = {};
         if (data) {
             let otpCode = Math.floor((Math.random() * 10000) + 1);
+            const PrevOtpData = await otp.findOne({ email });
+            if (PrevOtpData) {
+                PrevOtpData.deleteOne();
+            }
             let otpData = new otp({
                 "email": email,
                 "otpCode": otpCode,
@@ -87,9 +91,9 @@ export const sendEmail = async (req, res) => {
             response.statusText = "Failure";
             response.message = "Email ID Not Exist";
         }
-        res.status(200).json({ "text": response.statusText, "message": response.message })
+        res.status(200).json({ "status": response.statusText, "message": response.message })
     } catch (error) {
-        res.status(404).json(error)
+        res.status(404).json(error.message)
     }
 }
 

@@ -1,17 +1,24 @@
 import mongoose from "mongoose";
 import Question from "../models/questions.js";
 
+import User from "../models/auth.js";
+
 
 export const AskQuestion = async (req, res) => {
     try {
         const postQuestionData = req.body;
-        const postQuestion = new Question({ ...postQuestionData, userId: req.userId });
+        const { id } = req.body
+        const postQuestion = new Question({ ...postQuestionData });
         await postQuestion.save();
+        const user = await User.findById(id)
+        user.verified = false;
+        await user.save({ new: true })
+        console.log(user)
         res.status(201).json("question posted")
 
     } catch (error) {
         console.log(error);
-        return res.status(404).json("question not posted")
+        return res.status(404).json({ "message": "question not posted", "message": error.message })
     }
 }
 
