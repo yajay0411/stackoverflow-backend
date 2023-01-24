@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { stripe } from "../Utils/Stripe.js"
 
 //user model
 import User from "../models/auth.js";
 
 //otp model senmail function
 import otp from "../models/otp.js";
-import { sendmail } from "./sendEmail.js"
+import { sendmail } from "../Utils/sendEmail.js"
 
 
 //controller function for signup
@@ -18,10 +19,16 @@ export const signUp = async (req, res) => {
         if (existingUser) {
             return res.status(404).json({ message: "User already exist" })
         }
-        const hashedPassword = await bcrypt.hash(password, 12)
-        const newUser = await User.create({ name, email, password: hashedPassword })
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const customer = await stripe.customers.create({
+            email
+        }, {
+            apiKey: process.env.STRIPE_SECRET_KEY
+        })
+        console.log(customer)
+        const newUser = await User.create({ name, email, password: hashedPassword, stripeCustomer: customer })
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, "test", { expiresIn: "1h" });
-        res.status(201).json({ result: newUser, token })
+        res.status(201).json({ result: { newUser }, token })
     } catch (error) {
         res.status(404).json("Something Went Wrong..." + error)
     }
