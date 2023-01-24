@@ -1,37 +1,33 @@
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const sendmail = async (req, res) => {
-    const { email, otp } = req.body;
+import nodemailer from "nodemailer";
 
-    // let testAccount = await nodemailer.createTestAccount();
+export const sendmail = ({ email, otpCode, value }) => {
 
-    let transporter = nodemailer.createTransport({
-        service: "gmail",
-        // host: "smtp.ethereal.email",
+    //testing of this send module is done on ethreal.email.com
 
-        // port: 587,
-        // secure: false,
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
         auth: {
-            user: process.env.EMAIL,
-            pass: process.env.EMAIL_PASSWORD,
-            // user: testAccount.user,
-            // pass: testAccount.pass,
-        },
+            user: 'frederick90@ethereal.email',
+            pass: 'dCmHzsdetmKqj87yqA'
+        }
     });
 
     let mailOptions = {
-        from: process.env.EMAIL,
+        from: 'smtp.ethereal.email',
         to: email,
-        subject: "OTP for login",
-        text: `Your OTP is ${otp}`,
+        subject: `OTP for ${value}`,
+        text: `Your OTP is ${otpCode}`,
     };
 
-    try {
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: "OTP sent successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error sending OTP", error });
-    }
-};
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    })
+}
