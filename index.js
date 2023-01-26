@@ -43,7 +43,7 @@ app.use("/community", postRouter);
 app.use("/subs", subsRouter);
 
 //environment variables for server port and database
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 const Database_URL = process.env.CONNECTION_URL
 
 //snippets for database connection and server connection
