@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 import cors from "cors";
 // cors it is for resolving cross platform policies errors
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: "https://stackoverflow-clone-yajay0411.netlify.app/"
 }));
 
 //creating a static page for displaying images and videos uploaded to be accessible
