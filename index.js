@@ -6,18 +6,19 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 
+
 //some middlewares for cross site data transactions
 const app = express();
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
-
 //import for cors it is for resolving cross platform policies errors
 import cors from "cors";
 // cors it is for resolving cross platform policies errors
 app.use(cors({
-    origin: "http://localhost:5173"
+   Origin: "https://stackoverflow-clone-yajay0411.netlify.app"
 }));
+
 
 //creating a static page for displaying images and videos uploaded to be accessible
 app.use("/media", express.static("media"));
