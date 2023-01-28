@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { stripe } from "../Utils/Stripe.js"
 
 //user model
 import User from "../models/auth.js";

@@ -34,14 +34,12 @@ import userRouter from "./routes/users.js";
 import questionRouter from "./routes/questions.js";
 import answerRouter from "./routes/answers.js";
 import postRouter from "./routes/post.js";
-import subsRouter from "./routes/subcription.js";
 
 //all routes 
 app.use("/users", userRouter);
 app.use("/questions", questionRouter);
 app.use("/answers", answerRouter);
 app.use("/community", postRouter);
-app.use("/subs", subsRouter);
 
 //environment variables for server port and database
 const PORT = process.env.PORT || 5000;
