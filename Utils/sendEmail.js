@@ -11,8 +11,8 @@ export const sendmail = ({ email, otpCode, value }) => {
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'coleman.skiles59@ethereal.email',
-            pass: 'Zv1H7vY2bZF9ZJrmXZ'
+            user: 'alan.reichel@ethereal.email',
+            pass: 'SvmeH9YsYBQ4YvRzgh'
         }
     });
 

@@ -1,6 +1,6 @@
 //dotenv is for accessing the variables stored in .env file
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: "./config/config.env" });
 
 //some middlewares for cross site data transactions imports
 import express from "express";
@@ -15,9 +15,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 //import for cors it is for resolving cross platform policies errors
 import cors from "cors";
 // cors it is for resolving cross platform policies errors
-app.use(cors({
-   Origin: "https://stackoverflow-clone-yajay0411.netlify.app"
-}));
+app.use(cors());
 
 
 //creating a static page for displaying images and videos uploaded to be accessible
@@ -43,14 +41,15 @@ app.use("/community", postRouter);
 
 //environment variables for server port and database
 const PORT = process.env.PORT || 5000;
-const Database_URL = process.env.CONNECTION_URL
 
-//snippets for database connection and server connection
+app.listen(PORT, () => {
+    console.log(`connected to port ${PORT}`)
+});
+
+// const Database_URL = process.env.CONNECTION_URL
+
+// //snippets for database connection and server connection
 mongoose.set('strictQuery', true);
-mongoose.connect(Database_URL, { useUnifiedTopology: true })
-    .then(() => app.listen(PORT, () => {
-        console.log(`connected to port ${PORT}`)
-        console.log(`connected to database`)
-    })).catch((error) => {
-        console.log(error.message)
-    })
+mongoose.connect(process.env.CONNECTION_URL, { useUnifiedTopology: true })
+    .then(() => console.log(`connected to database`))
+    .catch((error) => console.log(error.message));
